@@ -24,7 +24,7 @@
     "url": "https://github.com/DaMouse404/koa-cache-headers/issues"
   },
   "devDependencies": {
-    "eslint": "^2.10.2",
+    "eslint": "^3.2.0",
     "istanbul": "^0.4.3",
     "koa": "^1.0.0",
     "mocha": "^2.3.2",
