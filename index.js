@@ -1,10 +1,7 @@
-var _ = require('lodash');
-var util = require('util');
-
 module.exports = function (defaults) {
   return function cacheControl(ctx, next) {
     return next().then(function () {
-      var options = _.defaults(ctx.cacheControl || {}, defaults);
+      var options = ctx.cacheControl || defaults || {};
       var cacheControl = [];
 
       if (options.private) {
@@ -36,20 +33,20 @@ module.exports = function (defaults) {
         cacheControl.push('must-revalidate');
       } else if (!options.noCache) {
         if (options.staleIfError) {
-          cacheControl.push(util.format('stale-if-error=%d', options.staleIfError));
+          cacheControl.push(`stale-if-error=${options.staleIfError}`);
         }
 
         if (options.staleWhileRevalidate) {
-          cacheControl.push(util.format('stale-while-revalidate=%d', options.staleWhileRevalidate));
+          cacheControl.push(`stale-while-revalidate=${options.staleWhileRevalidate}`);
         }
       }
 
-      if (_.isNumber(options.maxAge)) {
-        cacheControl.push(util.format('max-age=%d', options.maxAge));
+      if (Number.isInteger(options.maxAge)) {
+        cacheControl.push(`max-age=${options.maxAge}`);
       }
 
-      if (_.isNumber(options.sMaxAge)) {
-        cacheControl.push(util.format('s-maxage=%d', options.sMaxAge));
+      if (Number.isInteger(options.sMaxAge)) {
+        cacheControl.push(`s-maxage=${options.sMaxAge}`);
       }
 
       if (cacheControl.length) {
