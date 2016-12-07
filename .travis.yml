@@ -1,5 +1,7 @@
 node_js:
  - "4"
+ - "6"
+ - "7"
 language: node_js
 script: "npm run coverage"
 after_script: "npm install coveralls@2 && cat ./coverage/lcov.info | coveralls"
