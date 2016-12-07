@@ -28,29 +28,27 @@ app.use(cacheControl({
 ### Overriding Defaults
 Just set the cacheControl object after the cacheControl() middleware is loaded on the request context:
 ```js
-app.use(function *(next){
-    this.cacheControl = {
+app.use(function (ctx, next) {
+    ctx.cacheControl = {
         maxAge: 60
     };
 
-    yield next;
+    return next();
 });
 ```
 
 This is useful in error conditions where you can setup cache headers before and after a request is processed:
 ```js
-app.use(function *(next){
-    this.cacheControl = {
+app.use(function (ctx, next) {
+    ctx.cacheControl = {
         maxAge: 60
     };
 
-    try {
-        yield next;
-    } catch (err) {
-        this.cacheControl = {
-            maxAge: 5
-        };
-    }
+    return next().catch((err) => {
+      ctx.cacheControl = {
+          maxAge: 5
+      };
+    });
 });
 ```
 
