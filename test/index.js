@@ -1,12 +1,12 @@
-var request = require('supertest');
-var koa = require('koa');
-var cacheControl = require('..');
-var fs = require('fs');
+const request = require('supertest');
+const koa = require('koa');
+const cacheControl = require('..');
+const fs = require('fs');
 
 describe('cacheControl()', function () {
   describe('default configuration', function () {
     it('uses defaults if nothing defined on request', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         maxAge: 4
@@ -25,7 +25,7 @@ describe('cacheControl()', function () {
 
   describe('override default configuration', function () {
     it('allows middleware to override options in incoming requests', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         maxAge: 4
@@ -46,7 +46,7 @@ describe('cacheControl()', function () {
     })
 
     it('allows middleware to override options on outgoing requests', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         maxAge: 300
@@ -73,7 +73,7 @@ describe('cacheControl()', function () {
 
   describe('public is set', function () {
     it('adds public flag to cache-control header', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         public: true
@@ -92,7 +92,7 @@ describe('cacheControl()', function () {
 
   describe('private is set', function () {
     it('adds private flag to cache-control header', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         private: true
@@ -109,7 +109,7 @@ describe('cacheControl()', function () {
     });
 
     it('discards public flag in cache-control header', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         private: true,
@@ -129,7 +129,7 @@ describe('cacheControl()', function () {
 
   describe('maxAge is set', function () {
     it('sets cache-control max-age section', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         maxAge: 4
@@ -148,7 +148,7 @@ describe('cacheControl()', function () {
 
   describe('staleIfError is set', function () {
     it('sets cache-control header with stale-if-error', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         staleIfError: 320
@@ -167,7 +167,7 @@ describe('cacheControl()', function () {
 
   describe('staleWhileRevalidate is set', function () {
     it('sets cache-control header with stale-while-revalidate', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         staleWhileRevalidate: 320
@@ -186,7 +186,7 @@ describe('cacheControl()', function () {
 
   describe('mustRevalidate is set', function () {
     it('sets cache-control header with must-revalidate', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         mustRevalidate: true
@@ -203,7 +203,7 @@ describe('cacheControl()', function () {
     });
 
     it('overthrows stale-while-revalidate and stale-if-error', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         mustRevalidate: true,
@@ -224,7 +224,7 @@ describe('cacheControl()', function () {
 
   describe('when noCache is true', function () {
     it('adds no-cache to Cache-Control header', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         noCache: true
@@ -241,7 +241,7 @@ describe('cacheControl()', function () {
     });
 
     it('sets maxAge to 0', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         noCache: true,
@@ -259,7 +259,7 @@ describe('cacheControl()', function () {
     });
 
     it('removes sMaxAge', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         noCache: true,
@@ -277,7 +277,7 @@ describe('cacheControl()', function () {
     });
 
     it('ignores stale settings', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         noCache: true,
@@ -298,7 +298,7 @@ describe('cacheControl()', function () {
 
   describe('when noStore is true', function () {
     it('sets Cache-Control no-store and no-cache', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         noStore: true
@@ -315,7 +315,7 @@ describe('cacheControl()', function () {
     });
 
     it('sets maxAge to 0', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         noStore: true,
@@ -335,7 +335,7 @@ describe('cacheControl()', function () {
 
   describe('when noTransform is set', function () {
     it('sets Cache-Control no-transform', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         noTransform: true
@@ -354,7 +354,7 @@ describe('cacheControl()', function () {
 
   describe('when proxyRevalidate', function () {
     it('sets Cache-Control proxy-revalidate', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         proxyRevalidate: true
@@ -374,7 +374,7 @@ describe('cacheControl()', function () {
 
   describe('when sMaxAge', function () {
     it('sets Cache-Control s-maxage property', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl({
         sMaxAge: 10
@@ -393,7 +393,7 @@ describe('cacheControl()', function () {
 
   describe('when no cache properties set', function () {
     it('does not set a cache-control header', function (done) {
-      var app = new koa();
+      const app = new koa();
 
       app.use(cacheControl());
 
